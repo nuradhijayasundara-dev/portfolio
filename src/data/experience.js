@@ -1,7 +1,7 @@
 const experience = [
   {
     index: '01',
-    company: 'Island First',
+    company: 'Island First MCQ Platform',
     role: 'EMPLOYEE',
     period: 'PRESENT',
     location: '',

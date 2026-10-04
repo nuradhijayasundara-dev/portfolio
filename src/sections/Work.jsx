@@ -5,7 +5,7 @@ import ProjectImmersive from '../components/ProjectImmersive'
 import ProjectSplit from '../components/ProjectSplit'
 
 export default function Work() {
-  const [backhaul, airplane, farmhouse] = projects
+  const [backhaul, airplane, farmhouse, finance] = projects
 
   return (
     <section id="work" className="max-w-content mx-auto px-6 md:px-12 py-28 md:py-40">
@@ -20,6 +20,7 @@ export default function Work() {
       <ProjectImmersive project={backhaul} />
       <ProjectSplit project={airplane} />
       <ProjectSplit project={farmhouse} />
+      <ProjectSplit project={finance} />
     </section>
   )
 }

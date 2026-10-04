@@ -79,6 +79,27 @@ const projects = [
       'https://www.linkedin.com/posts/wiyathma-anuradhi-948375308_databasemanagement-mysql-php-ugcPost-7512355616892399616-G2vJ',
     liveUrl: null,
   },
+  {
+    id: 'finance-tracker',
+    index: '04',
+    layout: 'split',
+    status: 'IN PROGRESS',
+    visual: 'finance',
+    tags: ['FASTAPI', 'FULL-STACK', 'DATA VISUALIZATION'],
+    title: ['PERSONAL', 'FINANCE', 'TRACKER'],
+    description:
+      'A personal finance tracker I am currently building to record income and expenses, with a dashboard that charts spending by category and by month.',
+    technologies: ['FastAPI', 'JWT', 'SQLAlchemy', 'SQLite', 'PostgreSQL-ready', 'HTML', 'CSS', 'JavaScript', 'Chart.js'],
+    features: [
+      'User registration and JWT login, with each user seeing only their own data',
+      'Add, edit and delete income and expense transactions',
+      'Dashboard totals for income, expenses and balance',
+      'Spending-by-category doughnut chart and monthly income vs expenses bar chart',
+      'Dark mode and a mobile-friendly interface',
+    ],
+    github: 'https://github.com/nuradhijayasundara-dev/FinacialTracker',
+    liveUrl: null,
+  },
 ]
 
 export default projects

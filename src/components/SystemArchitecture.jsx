@@ -3,68 +3,102 @@ import { motion } from 'framer-motion'
 import useReducedMotion from '../hooks/useReducedMotion'
 
 /**
- * SystemArchitecture — a living, animated visualization of the Backhaul-Match
- * platform: courier → gateway → matching → fleet → driver, with data
- * particles travelling the connections, a mini OSRM route calculation, and
- * a matching-engine state sequence. Pure SVG + Framer Motion, no images.
+ * SystemArchitecture — an animated, colour-coded view of Backhaul-Match:
+ * courier → gateway → matching platform → fleet → driver, with data
+ * particles on every connection, the microservices behind the platform, a
+ * mini OSRM route calculation and the matching-engine state sequence.
+ * Pure SVG + Framer Motion, generated in the frontend. Illustrative only.
  */
+
+const C = {
+  courier: '#F59E0B',
+  gateway: '#A78BFA',
+  matching: '#3B82F6',
+  fleet: '#10B981',
+  driver: '#F472B6',
+  cyan: '#22D3EE',
+}
 
 const NODES = [
   {
     id: 'courier',
+    step: 1,
     label: 'COURIER SYSTEM',
     sub: ['COURIER', 'SHIPMENT', 'BOOKING'],
-    x: 90,
+    x: 95,
+    w: 150,
+    color: C.courier,
     description: 'Submits shipment and booking requests from courier operations.',
   },
   {
     id: 'gateway',
+    step: 2,
     label: 'API GATEWAY',
-    sub: [],
-    x: 300,
+    sub: ['SINGLE ENTRY POINT'],
+    x: 318,
+    w: 140,
+    color: C.gateway,
     description: 'Central entry point for service communication.',
   },
   {
     id: 'matching',
+    step: 3,
     label: 'MATCHING PLATFORM',
     sub: ['MATCHING ENGINE', 'OSRM'],
-    x: 560,
+    x: 550,
+    w: 190,
+    color: C.matching,
     description: 'Route-based vehicle matching using OSRM.',
-    wide: true,
   },
   {
     id: 'fleet',
+    step: 4,
     label: 'FLEET SYSTEM',
     sub: ['FLEET', 'VEHICLE', 'AVAILABILITY'],
-    x: 820,
+    x: 782,
+    w: 150,
+    color: C.fleet,
     description: 'Tracks vehicle availability for matched shipments.',
   },
   {
     id: 'driver',
+    step: 5,
     label: 'DRIVER',
-    sub: [],
-    x: 1010,
+    sub: ['DISPATCH'],
+    x: 1005,
+    w: 130,
+    color: C.driver,
     description: 'Receives the matched shipment for dispatch.',
   },
 ]
 
-const CONNECTIONS = [
-  { from: 'courier', to: 'gateway', label: 'SHIPMENT REQUEST', duration: 3.2, color: 'var(--color-accent)' },
-  { from: 'gateway', to: 'matching', label: 'API REQUEST', duration: 2.4, color: 'var(--color-skyblue)' },
-  { from: 'matching', to: 'fleet', label: 'VEHICLE MATCH', duration: 3.6, color: 'var(--color-blue)' },
-  { from: 'fleet', to: 'driver', label: 'DISPATCH', duration: 2.8, color: 'var(--color-accent)' },
+const LINKS = [
+  { from: 'courier', to: 'gateway', label: ['SHIPMENT', 'REQUEST'], duration: 3.2 },
+  { from: 'gateway', to: 'matching', label: ['API', 'REQUEST'], duration: 2.6 },
+  { from: 'matching', to: 'fleet', label: ['VEHICLE', 'MATCH'], duration: 3.4 },
+  { from: 'fleet', to: 'driver', label: ['DISPATCH'], duration: 2.8 },
 ]
 
-const MICROSERVICES = [
-  { label: 'AUTH', dx: -170, dy: -78 },
-  { label: 'SHIPMENT', dx: 0, dy: -92 },
-  { label: 'MATCHING', dx: 170, dy: -78 },
-  { label: 'FLEET', dx: -170, dy: 78 },
-  { label: 'GPS', dx: 0, dy: 92 },
-  { label: 'NOTIFICATION', dx: 170, dy: 78 },
+const SERVICES = [
+  { label: 'AUTH', color: C.gateway },
+  { label: 'SHIPMENT', color: C.courier },
+  { label: 'MATCHING', color: C.matching },
+  { label: 'FLEET', color: C.fleet },
+  { label: 'GPS', color: C.cyan },
+  { label: 'NOTIFICATION', color: C.driver },
+  { label: 'PAYMENT', color: '#FACC15' },
 ]
 
-const STATES = ['WAITING_FOR_MATCH', 'ROUTE CALCULATION', 'MATCHING', 'MATCH FOUND', 'BOOKING PENDING']
+const STATES = [
+  { label: 'WAITING_FOR_MATCH', color: C.courier },
+  { label: 'ROUTE CALCULATION', color: C.cyan },
+  { label: 'MATCHING', color: C.matching },
+  { label: 'MATCH FOUND', color: C.fleet },
+  { label: 'BOOKING PENDING', color: C.driver },
+]
+
+const MONO = 'JetBrains Mono, monospace'
+const byId = (id) => NODES.find((n) => n.id === id)
 
 function useIsDesktop() {
   const [isDesktop, setIsDesktop] = useState(true)
@@ -78,183 +112,153 @@ function useIsDesktop() {
   return isDesktop
 }
 
-function node(id) {
-  return NODES.find((n) => n.id === id)
-}
-
-function Particle({ x1, y1, x2, y2, duration, delay = 0, color, reduced, size = 3.4 }) {
+function Particle({ x1, y1, x2, y2, duration, delay = 0, color, reduced, size = 4.5 }) {
   if (reduced) {
-    return <circle cx={(x1 + x2) / 2} cy={(y1 + y2) / 2} r={size} fill={color} opacity={0.7} />
+    return <circle cx={(x1 + x2) / 2} cy={(y1 + y2) / 2} r={size} fill={color} />
   }
+  const anim = { cx: [x1, x2], cy: [y1, y2], opacity: [0, 1, 1, 0] }
+  const tr = { duration, repeat: Infinity, ease: 'linear', delay }
   return (
-    <motion.circle
-      r={size}
-      fill={color}
-      initial={{ cx: x1, cy: y1, opacity: 0 }}
-      animate={{ cx: [x1, x2], cy: [y1, y2], opacity: [0, 1, 1, 0] }}
-      transition={{ duration, repeat: Infinity, ease: 'linear', delay }}
-    />
+    <>
+      <motion.circle r={size * 2.2} fill={color} opacity={0} initial={{ cx: x1, cy: y1, opacity: 0 }} animate={{ ...anim, opacity: [0, 0.28, 0.28, 0] }} transition={tr} />
+      <motion.circle r={size} fill={color} initial={{ cx: x1, cy: y1, opacity: 0 }} animate={anim} transition={tr} />
+    </>
   )
 }
 
 function DesktopDiagram({ reduced }) {
-  const [hovered, setHovered] = useState(null)
-  const y = 130
+  const [active, setActive] = useState(null)
+  const y = 150
+  const h = 104
 
   return (
-    <div className="relative w-full">
-      <svg viewBox="0 0 1100 460" className="w-full h-auto" role="img" aria-label="Backhaul-Match system architecture">
+    <div className="w-full">
+      <svg viewBox="0 0 1100 410" className="w-full h-auto" role="img" aria-label="Backhaul-Match system architecture">
         <defs>
-          <pattern id="sysgrid" width="28" height="28" patternUnits="userSpaceOnUse">
-            <circle cx="1" cy="1" r="1" fill="var(--color-line)" opacity="0.6" />
+          <pattern id="sysdots" width="26" height="26" patternUnits="userSpaceOnUse">
+            <circle cx="1" cy="1" r="1" fill="#1E3A5F" />
           </pattern>
+          {LINKS.map((l) => (
+            <linearGradient key={l.from} id={`g-${l.from}`} gradientUnits="userSpaceOnUse" x1={byId(l.from).x} y1="0" x2={byId(l.to).x} y2="0">
+              <stop offset="0" stopColor={byId(l.from).color} />
+              <stop offset="1" stopColor={byId(l.to).color} />
+            </linearGradient>
+          ))}
         </defs>
-        <rect width="1100" height="460" fill="url(#sysgrid)" opacity="0.5" />
+        <rect width="1100" height="410" fill="url(#sysdots)" opacity="0.55" />
 
-        {/* coordinate-style corner marks, purely decorative */}
-        <text x="16" y="24" fontFamily="JetBrains Mono, monospace" fontSize="9" fill="var(--color-muted)" letterSpacing="1">
-          SYS.ARCH — BACKHAUL-MATCH
-        </text>
-        <text x="1084" y="24" textAnchor="end" fontFamily="JetBrains Mono, monospace" fontSize="9" fill="var(--color-muted)" letterSpacing="1">
-          LIVE FLOW SIMULATION
-        </text>
-
-        {/* connections + particles */}
-        {CONNECTIONS.map((c) => {
-          const a = node(c.from)
-          const b = node(c.to)
-          const highlighted = hovered === c.from || hovered === c.to
-          return (
-            <g key={c.from + c.to}>
-              <line
-                x1={a.x}
-                y1={y}
-                x2={b.x}
-                y2={y}
-                stroke="var(--color-line)"
-                strokeWidth={highlighted ? 1.6 : 1}
-                opacity={highlighted ? 0.9 : 0.6}
-              />
-              <text
-                x={(a.x + b.x) / 2}
-                y={y - 12}
-                textAnchor="middle"
-                fontFamily="JetBrains Mono, monospace"
-                fontSize="8.5"
-                letterSpacing="1"
-                fill="var(--color-muted)"
-                opacity={highlighted ? 0.95 : 0.55}
-              >
-                {c.label}
-              </text>
-              <Particle x1={a.x + 62} y1={y} x2={b.x - 62} y2={y} duration={c.duration} color={c.color} reduced={reduced} />
-              {c.from === 'gateway' || c.to === 'gateway' ? null : (
-                <Particle
-                  x1={a.x + 62}
-                  y1={y}
-                  x2={b.x - 62}
-                  y2={y}
-                  duration={c.duration}
-                  delay={c.duration / 2}
-                  color={c.color}
-                  reduced={reduced}
-                  size={2.2}
-                />
-              )}
-            </g>
-          )
-        })}
-
-        {/* microservice tags fanning out from the matching platform */}
-        {MICROSERVICES.map((m) => {
-          const mx = node('matching').x + m.dx * 0.72
-          const my = y + m.dy * 0.62
-          const active = hovered === 'matching'
-          return (
-            <g key={m.label} opacity={active ? 1 : 0.55} style={{ transition: 'opacity 300ms' }}>
-              <line x1={node('matching').x} y1={y} x2={mx} y2={my} stroke="var(--color-accent)" strokeWidth="0.75" opacity={active ? 0.5 : 0.25} />
-              <rect x={mx - 30} y={my - 9} width="60" height="16" rx="8" fill="var(--color-ink)" stroke="var(--color-line)" strokeWidth="0.75" />
-              <text x={mx} y={my + 3} textAnchor="middle" fontFamily="JetBrains Mono, monospace" fontSize="7" letterSpacing="0.5" fill="var(--color-skyblue)">
-                {m.label}
-              </text>
-            </g>
-          )
-        })}
-
-        {/* neutral-layer caption under the matching platform */}
-        <text
-          x={node('matching').x}
-          y={y + 118}
-          textAnchor="middle"
-          fontFamily="JetBrains Mono, monospace"
-          fontSize="8"
-          letterSpacing="1.5"
-          fill="var(--color-muted)"
-        >
+        {/* neutral layer bracket */}
+        <rect x={byId('matching').x - 120} y="24" width="240" height="22" rx="11" fill={`${C.matching}22`} stroke={C.matching} strokeOpacity="0.6" />
+        <text x={byId('matching').x} y="39" textAnchor="middle" fontFamily={MONO} fontSize="11" fontWeight="600" letterSpacing="1.5" fill="#93C5FD">
           NEUTRAL MATCHING LAYER
+        </text>
+
+        {/* connections */}
+        {LINKS.map((l) => {
+          const a = byId(l.from)
+          const b = byId(l.to)
+          const hot = active === l.from || active === l.to
+          const x1 = a.x + a.w / 2
+          const x2 = b.x - b.w / 2
+          return (
+            <g key={l.from}>
+              <line x1={x1} y1={y} x2={x2} y2={y} stroke={`url(#g-${l.from})`} strokeWidth={hot ? 3.5 : 2.5} strokeLinecap="round" opacity={hot ? 1 : 0.8} />
+              <polygon points={`${x2},${y} ${x2 - 9},${y - 5.5} ${x2 - 9},${y + 5.5}`} fill={b.color} />
+              {l.label.map((t, i) => (
+                <text key={t} x={(x1 + x2) / 2} y={y + 24 + i * 12} textAnchor="middle" fontFamily={MONO} fontSize="10" fontWeight="600" letterSpacing="0.8" fill={a.color} opacity={hot ? 1 : 0.85}>
+                  {t}
+                </text>
+              ))}
+              <Particle x1={x1} y1={y} x2={x2 - 6} y2={y} duration={l.duration} color={a.color} reduced={reduced} />
+              <Particle x1={x1} y1={y} x2={x2 - 6} y2={y} duration={l.duration} delay={l.duration / 2} color={b.color} reduced={reduced} size={3} />
+            </g>
+          )
+        })}
+
+        {/* microservices fanning out of the matching platform */}
+        {SERVICES.map((s, i) => {
+          const px = byId('matching').x + (i - (SERVICES.length - 1) / 2) * 118
+          const py = 336
+          const w = 108
+          const hot = active === 'matching'
+          return (
+            <g key={s.label}>
+              <path
+                d={`M ${byId('matching').x} ${y + h / 2 + 4} C ${byId('matching').x} ${y + 120}, ${px} ${y + 120}, ${px} ${py - 14}`}
+                fill="none"
+                stroke={s.color}
+                strokeWidth={hot ? 1.8 : 1.1}
+                strokeOpacity={hot ? 0.9 : 0.45}
+                strokeDasharray="4 4"
+              >
+                {!reduced && <animate attributeName="stroke-dashoffset" from="16" to="0" dur="2.4s" repeatCount="indefinite" />}
+              </path>
+              <rect x={px - w / 2} y={py - 14} width={w} height="28" rx="14" fill={`${s.color}1F`} stroke={s.color} strokeOpacity={hot ? 1 : 0.7} />
+              <circle cx={px - w / 2 + 14} cy={py} r="3" fill={s.color} />
+              <text x={px + 5} y={py + 3.5} textAnchor="middle" fontFamily={MONO} fontSize="9.5" fontWeight="600" letterSpacing="0.6" fill="#E2E8F0">
+                {s.label}
+              </text>
+            </g>
+          )
+        })}
+        <text x={byId('matching').x} y="392" textAnchor="middle" fontFamily={MONO} fontSize="10" letterSpacing="2" fill="#94A3B8">
+          INDEPENDENT MICROSERVICES BEHIND THE PLATFORM
         </text>
 
         {/* nodes */}
         {NODES.map((n) => {
-          const w = n.wide ? 190 : n.sub.length ? 150 : 110
-          const h = 70
-          const isHovered = hovered === n.id
+          const on = active === n.id
+          const nh = n.id === 'matching' ? 120 : h
           return (
             <g
               key={n.id}
-              onMouseEnter={() => setHovered(n.id)}
-              onMouseLeave={() => setHovered((h2) => (h2 === n.id ? null : h2))}
-              style={{ cursor: 'pointer' }}
+              tabIndex={0}
+              role="button"
+              aria-label={`${n.label}: ${n.description}`}
+              onMouseEnter={() => setActive(n.id)}
+              onMouseLeave={() => setActive((c) => (c === n.id ? null : c))}
+              onFocus={() => setActive(n.id)}
+              onBlur={() => setActive((c) => (c === n.id ? null : c))}
+              onClick={() => setActive((c) => (c === n.id ? null : n.id))}
+              style={{ cursor: 'pointer', outline: 'none' }}
             >
-              <motion.rect
-                x={n.x - w / 2}
-                y={y - h / 2}
-                width={w}
-                height={h}
-                rx="10"
-                fill="rgba(8,21,37,0.75)"
-                stroke={isHovered ? 'var(--color-accent)' : 'var(--color-line)'}
-                strokeWidth={isHovered ? 1.6 : 1}
-                animate={{ scale: isHovered ? 1.045 : 1 }}
-                style={{ transformOrigin: `${n.x}px ${y}px`, filter: isHovered ? 'drop-shadow(0 0 14px rgba(59,130,246,0.45))' : 'none' }}
+              <motion.g
+                animate={{ scale: on ? 1.06 : 1 }}
                 transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-              />
-              <text
-                x={n.x}
-                y={n.sub.length ? y - 8 : y + 4}
-                textAnchor="middle"
-                fontFamily="JetBrains Mono, monospace"
-                fontWeight="500"
-                fontSize="9.5"
-                letterSpacing="0.5"
-                fill="var(--color-offwhite, #F8FAFC)"
+                style={{ transformOrigin: `${n.x}px ${y}px`, filter: on ? `drop-shadow(0 0 16px ${n.color}99)` : `drop-shadow(0 0 6px ${n.color}33)` }}
               >
-                {n.label}
-              </text>
-              {n.sub.map((s, i) => (
-                <text
-                  key={s}
-                  x={n.x}
-                  y={y + 10 + i * 11}
-                  textAnchor="middle"
-                  fontFamily="JetBrains Mono, monospace"
-                  fontSize="7.5"
-                  letterSpacing="0.5"
-                  fill="var(--color-muted)"
-                >
-                  {s}
+                <rect x={n.x - n.w / 2} y={y - nh / 2} width={n.w} height={nh} rx="14" fill="#08121F" stroke={n.color} strokeWidth={on ? 2.2 : 1.5} />
+                <rect x={n.x - n.w / 2} y={y - nh / 2} width={n.w} height={nh} rx="14" fill={n.color} opacity={on ? 0.2 : 0.11} />
+                <circle cx={n.x - n.w / 2 + 14} cy={y - nh / 2 + 14} r="9" fill={n.color} />
+                <text x={n.x - n.w / 2 + 14} y={y - nh / 2 + 18} textAnchor="middle" fontFamily={MONO} fontSize="11" fontWeight="700" fill="#08121F">
+                  {n.step}
                 </text>
-              ))}
+                <text x={n.x} y={y - nh / 2 + 42} textAnchor="middle" fontFamily={MONO} fontSize={n.label.length > 14 ? 11.5 : 12.5} fontWeight="700" letterSpacing="0.4" fill="#F8FAFC">
+                  {n.label}
+                </text>
+                {n.sub.map((s, i) => (
+                  <text key={s} x={n.x} y={y - nh / 2 + 62 + i * 14} textAnchor="middle" fontFamily={MONO} fontSize="10" letterSpacing="0.6" fill={n.color}>
+                    {s}
+                  </text>
+                ))}
+              </motion.g>
             </g>
           )
         })}
       </svg>
 
-      {/* hover description panel */}
-      <div className="mt-4 h-6">
-        {hovered && (
-          <p className="font-mono text-[11px] uppercase tracking-widest2 text-accent">
-            {node(hovered).label} — <span className="text-muted normal-case tracking-normal">{node(hovered).description}</span>
+      <div className="mt-4 min-h-[3.25rem] flex items-start">
+        {active ? (
+          <p className="text-sm md:text-base text-offwhite flex items-center gap-3">
+            <span className="w-2.5 h-2.5 rounded-full shrink-0" style={{ background: byId(active).color }} />
+            <span className="font-mono text-xs uppercase tracking-widest2" style={{ color: byId(active).color }}>
+              {byId(active).label}
+            </span>
+            <span className="text-muted">{byId(active).description}</span>
+          </p>
+        ) : (
+          <p className="font-mono text-[11px] uppercase tracking-widest2 text-muted/70">
+            Hover or tap a node to see what it does
           </p>
         )}
       </div>
@@ -263,98 +267,115 @@ function DesktopDiagram({ reduced }) {
 }
 
 function OsrmAndState({ reduced }) {
-  const pickup = { x: 40, y: 60 }
-  const delivery = { x: 400, y: 60 }
+  const a = { x: 50, y: 82 }
+  const b = { x: 430, y: 82 }
+  const c1 = { x: 150, y: 20 }
+  const c2 = { x: 250, y: 150 }
+  const path = `M ${a.x} ${a.y} C ${c1.x} ${c1.y}, ${c2.x} ${c2.y}, ${b.x} ${b.y}`
+  // sample the bezier so the vehicle follows the route
+  const pts = Array.from({ length: 13 }, (_, i) => {
+    const t = i / 12
+    const u = 1 - t
+    return [
+      u ** 3 * a.x + 3 * u * u * t * c1.x + 3 * u * t * t * c2.x + t ** 3 * b.x,
+      u ** 3 * a.y + 3 * u * u * t * c1.y + 3 * u * t * t * c2.y + t ** 3 * b.y,
+    ]
+  })
 
   return (
     <div className="grid md:grid-cols-2 gap-6">
-      {/* OSRM mini route */}
       <div className="border border-line rounded-2xl bg-panel/60 p-6 md:p-8">
-        <p className="font-mono text-[11px] uppercase tracking-widest2 text-muted mb-6">OSRM route calculation</p>
-        <svg viewBox="0 0 440 140" className="w-full h-auto" role="img" aria-label="OSRM route calculation visualization">
-          <line x1={pickup.x} y1={pickup.y} x2={delivery.x} y2={delivery.y} stroke="var(--color-line)" strokeWidth="1" strokeDasharray="4 5" />
-          <motion.line
-            x1={pickup.x}
-            y1={pickup.y}
-            y2={pickup.y}
-            stroke="var(--color-accent)"
-            strokeWidth="2"
-            initial={{ x2: pickup.x }}
-            animate={reduced ? { x2: delivery.x } : { x2: [pickup.x, delivery.x, pickup.x] }}
-            transition={reduced ? {} : { duration: 6, repeat: Infinity, ease: 'easeInOut' }}
+        <p className="font-mono text-[11px] uppercase tracking-widest2 text-cyan-300 mb-6">OSRM route calculation</p>
+        <svg viewBox="0 0 480 170" className="w-full h-auto" role="img" aria-label="OSRM route calculation visualization">
+          <defs>
+            <linearGradient id="routeGrad" x1="0" x2="1">
+              <stop offset="0" stopColor={C.courier} />
+              <stop offset="0.5" stopColor={C.matching} />
+              <stop offset="1" stopColor={C.fleet} />
+            </linearGradient>
+          </defs>
+          <path d={path} fill="none" stroke="#1E3A5F" strokeWidth="2" strokeDasharray="5 6" />
+          <motion.path
+            d={path}
+            fill="none"
+            stroke="url(#routeGrad)"
+            strokeWidth="4"
+            strokeLinecap="round"
+            initial={{ pathLength: reduced ? 1 : 0 }}
+            animate={reduced ? { pathLength: 1 } : { pathLength: [0, 1, 1, 0] }}
+            transition={reduced ? {} : { duration: 6, repeat: Infinity, times: [0, 0.55, 0.9, 1], ease: 'easeInOut' }}
           />
-          <circle cx={pickup.x} cy={pickup.y} r="6" fill="var(--color-ink)" stroke="var(--color-accent)" strokeWidth="1.5" />
-          <circle cx={delivery.x} cy={delivery.y} r="6" fill="var(--color-ink)" stroke="var(--color-skyblue)" strokeWidth="1.5" />
-          <text x={pickup.x} y={pickup.y - 16} textAnchor="start" fontFamily="JetBrains Mono, monospace" fontSize="9" letterSpacing="1" fill="var(--color-muted)">
-            PICKUP
-          </text>
-          <text x={delivery.x} y={delivery.y - 16} textAnchor="end" fontFamily="JetBrains Mono, monospace" fontSize="9" letterSpacing="1" fill="var(--color-muted)">
-            DELIVERY
-          </text>
-
-          <Particle
-            x1={pickup.x}
-            y1={pickup.y + 26}
-            x2={delivery.x}
-            y2={pickup.y + 26}
-            duration={4.5}
-            color="var(--color-skyblue)"
-            reduced={reduced}
-            size={3}
-          />
-          <text x={(pickup.x + delivery.x) / 2} y={pickup.y + 46} textAnchor="middle" fontFamily="JetBrains Mono, monospace" fontSize="8" letterSpacing="0.5" fill="var(--color-muted)">
-            VEHICLE
-          </text>
+          <circle cx={a.x} cy={a.y} r="9" fill="#08121F" stroke={C.courier} strokeWidth="3" />
+          <circle cx={b.x} cy={b.y} r="9" fill="#08121F" stroke={C.fleet} strokeWidth="3" />
+          <text x={a.x} y={a.y + 30} textAnchor="middle" fontFamily={MONO} fontSize="11" fontWeight="600" letterSpacing="1" fill={C.courier}>PICKUP</text>
+          <text x={b.x} y={b.y + 30} textAnchor="middle" fontFamily={MONO} fontSize="11" fontWeight="600" letterSpacing="1" fill={C.fleet}>DELIVERY</text>
+          {!reduced && (
+            <motion.g
+              initial={{ x: pts[0][0], y: pts[0][1], opacity: 1 }}
+              animate={{
+                x: [...pts.map((p) => p[0]), b.x, a.x],
+                y: [...pts.map((p) => p[1]), b.y, a.y],
+                opacity: [...pts.map(() => 1), 0, 0],
+              }}
+              transition={{
+                duration: 6,
+                repeat: Infinity,
+                ease: 'linear',
+                times: [...pts.map((_, i) => (i / (pts.length - 1)) * 0.55), 0.9, 1],
+              }}
+            >
+              <rect x="-11" y="-7" width="22" height="14" rx="4" fill={C.matching} />
+              <circle cx="-6" cy="8" r="2.6" fill="#F8FAFC" />
+              <circle cx="6" cy="8" r="2.6" fill="#F8FAFC" />
+            </motion.g>
+          )}
+          <text x="240" y="160" textAnchor="middle" fontFamily={MONO} fontSize="10" letterSpacing="1.5" fill="#94A3B8">VEHICLE</text>
         </svg>
 
-        <div className="relative h-5 mt-2 overflow-hidden">
+        <div className="relative h-6 mt-2">
           <motion.p
-            className="absolute inset-0 font-mono text-[11px] uppercase tracking-widest2 text-muted"
+            className="absolute inset-0 font-mono text-xs uppercase tracking-widest2"
+            style={{ color: C.courier }}
             animate={reduced ? { opacity: 0 } : { opacity: [1, 1, 0, 0] }}
-            transition={reduced ? {} : { duration: 6, repeat: Infinity, times: [0, 0.45, 0.55, 1] }}
+            transition={reduced ? {} : { duration: 6, repeat: Infinity, times: [0, 0.5, 0.58, 1] }}
           >
-            Calculating route&hellip;
+            ● Calculating route&hellip;
           </motion.p>
           <motion.p
-            className="absolute inset-0 font-mono text-[11px] uppercase tracking-widest2 text-accent"
+            className="absolute inset-0 font-mono text-xs uppercase tracking-widest2"
+            style={{ color: C.fleet }}
             animate={reduced ? { opacity: 1 } : { opacity: [0, 0, 1, 1] }}
-            transition={reduced ? {} : { duration: 6, repeat: Infinity, times: [0, 0.45, 0.55, 1] }}
+            transition={reduced ? {} : { duration: 6, repeat: Infinity, times: [0, 0.5, 0.58, 1] }}
           >
-            Route compatible
+            ✓ Route compatible
           </motion.p>
         </div>
-        <p className="font-mono text-[10px] text-muted/60 mt-3">
+        <p className="font-mono text-[10px] text-muted/70 mt-3">
           Illustrative visualization of the project&rsquo;s route-matching logic — not live data.
         </p>
       </div>
 
-      {/* matching engine state sequence */}
       <div className="border border-line rounded-2xl bg-panel/60 p-6 md:p-8">
-        <p className="font-mono text-[11px] uppercase tracking-widest2 text-muted mb-6">Matching engine — state sequence</p>
-        <div className="relative pl-6">
-          <div className="absolute left-[5px] top-1 bottom-1 w-px bg-line" />
-          {!reduced && (
-            <motion.div
-              className="absolute left-[5px] w-px"
-              style={{ background: 'linear-gradient(to bottom, transparent, var(--color-accent), transparent)', height: '22%' }}
-              animate={{ top: ['0%', '78%'] }}
-              transition={{ duration: 7, repeat: Infinity, ease: 'easeInOut' }}
-            />
-          )}
+        <p className="font-mono text-[11px] uppercase tracking-widest2 text-pink-300 mb-6">Matching engine — state sequence</p>
+        <div className="relative pl-8">
+          <div className="absolute left-[7px] top-2 bottom-2 w-0.5 bg-line" />
           <ul className="space-y-5">
             {STATES.map((s, i) => (
-              <li key={s} className="relative flex items-center gap-3">
+              <li key={s.label} className="relative flex items-center">
                 <motion.span
-                  className="absolute -left-6 w-2.5 h-2.5 rounded-full bg-accent"
-                  animate={reduced ? { opacity: 0.6 } : { opacity: [0.3, 1, 0.3] }}
-                  transition={reduced ? {} : { duration: 7, repeat: Infinity, ease: 'easeInOut', delay: (i * 7) / STATES.length }}
+                  className="absolute -left-8 w-4 h-4 rounded-full border-2"
+                  style={{ borderColor: s.color, background: '#08121F' }}
+                  animate={reduced ? {} : { scale: [1, 1.35, 1], boxShadow: [`0 0 0 0 ${s.color}00`, `0 0 12px 2px ${s.color}AA`, `0 0 0 0 ${s.color}00`] }}
+                  transition={{ duration: 7, repeat: Infinity, ease: 'easeInOut', delay: (i * 7) / STATES.length }}
                 />
                 <motion.span
-                  className="font-mono text-xs uppercase tracking-widest2"
-                  animate={reduced ? { color: 'var(--color-muted)' } : { color: ['var(--color-muted)', 'var(--color-accent)', 'var(--color-muted)'] }}
-                  transition={reduced ? {} : { duration: 7, repeat: Infinity, ease: 'easeInOut', delay: (i * 7) / STATES.length }}
+                  className="font-mono text-xs md:text-sm uppercase tracking-widest2"
+                  style={{ color: s.color }}
+                  animate={reduced ? { opacity: 0.9 } : { opacity: [0.45, 1, 0.45] }}
+                  transition={{ duration: 7, repeat: Infinity, ease: 'easeInOut', delay: (i * 7) / STATES.length }}
                 >
-                  STATE {String(i + 1).padStart(2, '0')} — {s}
+                  <span className="opacity-60 mr-2">0{i + 1}</span>
+                  {s.label}
                 </motion.span>
               </li>
             ))}
@@ -367,34 +388,54 @@ function OsrmAndState({ reduced }) {
 
 function MobileDiagram({ reduced }) {
   const steps = [
-    { label: 'COURIER', sub: 'Shipment & booking requests' },
-    { label: 'API GATEWAY', sub: 'Service entry point' },
-    { label: 'MATCHING ENGINE', sub: 'Route-based vehicle matching' },
-    { label: 'OSRM', sub: 'Route calculation' },
-    { label: 'FLEET', sub: 'Vehicle availability' },
-    { label: 'DRIVER', sub: 'Dispatch' },
+    { label: 'COURIER', sub: 'Shipment & booking requests', color: C.courier },
+    { label: 'API GATEWAY', sub: 'Central entry point for services', color: C.gateway },
+    { label: 'MATCHING ENGINE', sub: 'Route-based vehicle matching', color: C.matching },
+    { label: 'OSRM', sub: 'Route calculation', color: C.cyan },
+    { label: 'FLEET', sub: 'Vehicle availability', color: C.fleet },
+    { label: 'DRIVER', sub: 'Dispatch', color: C.driver },
   ]
 
   return (
-    <div className="border border-line rounded-2xl bg-panel/60 p-6">
+    <div className="border border-line rounded-2xl bg-panel/60 p-5">
       <p className="font-mono text-[11px] uppercase tracking-widest2 text-muted mb-6">System flow</p>
-      <div className="relative pl-7">
-        <div className="absolute left-[9px] top-2 bottom-2 w-px bg-line" />
-        {steps.map((step, i) => (
-          <div key={step.label} className="relative pb-9 last:pb-0">
-            <span className="absolute -left-7 top-1 w-[18px] h-[18px] rounded-full border border-accent/50 bg-ink flex items-center justify-center">
-              <span className="w-1.5 h-1.5 rounded-full bg-accent" />
+      <div className="relative pl-12">
+        {steps.map((s, i) => (
+          <div key={s.label} className="relative pb-10 last:pb-0">
+            <span
+              className="absolute -left-12 top-0 w-8 h-8 rounded-full flex items-center justify-center font-mono text-xs font-bold text-ink"
+              style={{ background: s.color, boxShadow: `0 0 14px ${s.color}66` }}
+            >
+              {i + 1}
             </span>
-            {i < steps.length - 1 && !reduced && (
-              <motion.span
-                className="absolute -left-[19px] top-1 w-1.5 h-1.5 rounded-full bg-skyblue"
-                animate={{ top: ['4px', '38px'], opacity: [0, 1, 0] }}
-                transition={{ duration: 2.4, repeat: Infinity, ease: 'linear', delay: i * 0.4 }}
-              />
+            {i < steps.length - 1 && (
+              <>
+                <span className="absolute -left-[17px] top-9 bottom-[-4px] w-0.5" style={{ background: `linear-gradient(${s.color}, ${steps[i + 1].color})` }} />
+                {!reduced && (
+                  <motion.span
+                    className="absolute -left-[21px] w-2.5 h-2.5 rounded-full"
+                    style={{ background: s.color, boxShadow: `0 0 8px ${s.color}` }}
+                    initial={{ top: '36px', opacity: 0 }}
+                    animate={{ top: ['36px', '78px'], opacity: [0, 1, 0] }}
+                    transition={{ duration: 2.2, repeat: Infinity, ease: 'linear', delay: i * 0.35 }}
+                  />
+                )}
+              </>
             )}
-            <p className="font-mono text-sm uppercase tracking-widest2 text-offwhite">{step.label}</p>
-            <p className="text-muted text-xs mt-1">{step.sub}</p>
+            <div className="rounded-xl border px-4 py-3" style={{ borderColor: `${s.color}88`, background: `${s.color}14` }}>
+              <p className="font-mono text-sm font-semibold uppercase tracking-widest2" style={{ color: s.color }}>
+                {s.label}
+              </p>
+              <p className="text-offwhite/80 text-sm mt-1">{s.sub}</p>
+            </div>
           </div>
+        ))}
+      </div>
+      <div className="mt-8 flex flex-wrap gap-2">
+        {SERVICES.map((s) => (
+          <span key={s.label} className="font-mono text-[10px] uppercase tracking-widest2 rounded-full px-3 py-1.5 border" style={{ color: s.color, borderColor: `${s.color}88`, background: `${s.color}14` }}>
+            {s.label}
+          </span>
         ))}
       </div>
     </div>
@@ -406,10 +447,10 @@ export default function SystemArchitecture() {
   const isDesktop = useIsDesktop()
 
   return (
-    <div className="w-full border border-line rounded-2xl bg-panel/40 p-6 md:p-10">
+    <div className="w-full border border-line rounded-2xl bg-panel/40 p-5 md:p-10">
       <div className="flex items-center justify-between mb-8">
         <p className="font-mono text-[11px] uppercase tracking-widest2 text-muted">Animated system architecture</p>
-        <p className="hidden sm:block font-mono text-[10px] uppercase tracking-widest2 text-muted/50">
+        <p className="hidden sm:block font-mono text-[10px] uppercase tracking-widest2 text-muted/60">
           Courier &rarr; Gateway &rarr; Matching &rarr; Fleet &rarr; Driver
         </p>
       </div>

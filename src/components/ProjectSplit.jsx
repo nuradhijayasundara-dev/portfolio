@@ -1,11 +1,22 @@
 import { Github, Linkedin } from 'lucide-react'
 import Reveal from './Reveal'
+import FinanceViz from './FinanceViz'
 
 export default function ProjectSplit({ project }) {
   return (
     <article className="py-20 md:py-28 border-b border-line grid md:grid-cols-12 gap-10 md:gap-6">
       <div className="md:col-span-4">
         <span className="font-mono text-sm text-accent block mb-2">{project.index}</span>
+        {project.status && (
+          <span className="inline-flex items-center gap-2 mb-3 font-mono text-[11px] uppercase tracking-widest2 text-emerald-300 border border-emerald-400/30 rounded-full px-3 py-1">
+            <span className="relative flex w-2 h-2">
+              <span className="absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-60 animate-ping" />
+              <span className="relative inline-flex w-2 h-2 rounded-full bg-emerald-400" />
+            </span>
+            {project.status}
+          </span>
+        )}
+        {project.status && <br />}
         <span className="font-mono text-xs uppercase tracking-widest2 text-muted">
           {project.tags.join(' / ')}
         </span>
@@ -30,6 +41,12 @@ export default function ProjectSplit({ project }) {
             </span>
           ))}
         </Reveal>
+
+        {project.visual === 'finance' && (
+          <Reveal delay={0.15} className="mb-8">
+            <FinanceViz />
+          </Reveal>
+        )}
 
         {project.features?.length > 0 && (
           <Reveal delay={0.2}>

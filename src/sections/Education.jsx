@@ -54,8 +54,19 @@ export default function Education() {
         <div className="grid md:grid-cols-2 gap-10 md:gap-16">
           {education.schooling.map((s, i) => (
             <Reveal key={s.level} delay={i * 0.1} className="border-l border-accent/40 pl-6">
-              <p className="font-mono text-xs uppercase tracking-widest2 text-accent mb-3">{s.level}</p>
-              <p className="font-display text-2xl md:text-3xl text-offwhite leading-snug">{s.school}</p>
+              <p className="font-mono text-xs uppercase tracking-widest2 text-accent mb-3">
+                {s.level} ({s.year})
+              </p>
+              <p className="font-display text-2xl md:text-3xl text-offwhite leading-snug mb-6">{s.school}</p>
+              <p className="font-mono text-[11px] uppercase tracking-widest2 text-muted mb-3">Results</p>
+              <ul className="divide-y divide-line/70">
+                {s.results.map(([subject, grade]) => (
+                  <li key={subject} className="flex items-baseline justify-between gap-4 py-2">
+                    <span className="text-offwhite/85 text-sm md:text-base">{subject}</span>
+                    <span className="font-mono text-sm text-accent shrink-0">{grade}</span>
+                  </li>
+                ))}
+              </ul>
             </Reveal>
           ))}
         </div>
