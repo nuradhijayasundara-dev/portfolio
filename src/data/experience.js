@@ -39,11 +39,11 @@ const experience = [
     index: '03',
     company: 'BOC Pannala',
     role: 'INTERN',
-    period: '1 YEAR',
+    period: '6 MONTHS',
     location: 'PANNALA, SRI LANKA',
     label: 'Early professional experience',
     summary:
-      'Completed a one-year internship at BOC Pannala after leaving school, gaining early professional experience in a structured workplace environment.',
+      'Completed a six-month internship at BOC Pannala after leaving school, gaining early professional experience in a structured workplace environment.',
     type: 'non-technical',
   },
 ]

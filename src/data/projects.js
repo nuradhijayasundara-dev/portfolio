@@ -42,7 +42,7 @@ const projects = [
       flow: ['Courier System', 'API Gateway', 'Matching Platform', 'Fleet System'],
       supporting: ['Authentication', 'Matching', 'GPS', 'Notification'],
     },
-    github: '[ADD BACKHAUL-MATCH GITHUB URL]',
+    github: 'https://github.com/nuradhijayasundara-dev/soc2026project',
     liveUrl: null,
   },
   {
@@ -55,8 +55,8 @@ const projects = [
     description:
       'A Java-based airplane management project developed as part of my academic/software development work.',
     technologies: ['Java', 'Object-Oriented Programming', 'Software Development'],
-    features: ['[ADD FEATURES]'],
-    github: '[ADD GITHUB URL]',
+    features: [],
+    github: 'https://github.com/nuradhijayasundara-dev/Aeroplane',
     liveUrl: null,
   },
   {
@@ -75,27 +75,9 @@ const projects = [
       'MySQL database implementation',
     ],
     github: null,
+    linkedin:
+      'https://www.linkedin.com/posts/wiyathma-anuradhi-948375308_databasemanagement-mysql-php-ugcPost-7512355616892399616-G2vJ',
     liveUrl: null,
-  },
-]
-
-// Future / upcoming projects — shown as a minimal expandable list.
-export const futureProjects = [
-  {
-    index: '04',
-    name: '[PROJECT NAME]',
-    year: '2027',
-    description: '[ADD PROJECT DESCRIPTION]',
-    technologies: ['[ADD TECHNOLOGIES]'],
-    github: '[ADD GITHUB URL]',
-  },
-  {
-    index: '05',
-    name: '[PROJECT NAME]',
-    year: '2027',
-    description: '[ADD PROJECT DESCRIPTION]',
-    technologies: ['[ADD TECHNOLOGIES]'],
-    github: '[ADD GITHUB URL]',
   },
 ]
 

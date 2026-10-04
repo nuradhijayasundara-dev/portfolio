@@ -20,39 +20,45 @@ export default function Education() {
         </span>
       </Reveal>
 
-      <div className="grid md:grid-cols-3 gap-10 mt-20 pt-10 border-t border-line">
-        <Reveal>
+      <div className="grid md:grid-cols-12 gap-10 mt-20 pt-10 border-t border-line">
+        <Reveal className="md:col-span-4">
           <p className="font-mono text-[11px] uppercase tracking-widest2 text-muted mb-3">Timeline</p>
-          <p className="text-offwhite">
-            {education.startYear} — {education.expectedGraduation}
+          <p className="font-display text-3xl md:text-4xl text-offwhite">
+            {education.startYear}
+            <span className="text-accent mx-3">&mdash;</span>
+            {education.expectedGraduation}
           </p>
         </Reveal>
 
-        <Reveal delay={0.1}>
-          <p className="font-mono text-[11px] uppercase tracking-widest2 text-muted mb-3">
-            Relevant coursework
-          </p>
-          <ul className="space-y-1.5">
-            {education.coursework.map((c) => (
-              <li key={c} className="text-muted text-sm">
-                {c}
-              </li>
-            ))}
-          </ul>
-        </Reveal>
-
-        <Reveal delay={0.2}>
+        <Reveal delay={0.1} className="md:col-span-7 md:col-start-6">
           <p className="font-mono text-[11px] uppercase tracking-widest2 text-muted mb-3">
             Academic achievements
           </p>
-          <ul className="space-y-1.5">
+          <ul className="space-y-3">
             {education.achievements.map((a) => (
-              <li key={a} className="text-muted text-sm">
+              <li key={a} className="font-display text-xl md:text-2xl text-offwhite/90 leading-snug flex gap-4">
+                <span className="mt-3 block w-1.5 h-1.5 rounded-full bg-accent shrink-0" />
                 {a}
               </li>
             ))}
           </ul>
         </Reveal>
+      </div>
+
+      <div className="mt-20 pt-10 border-t border-line">
+        <Reveal>
+          <p className="font-mono text-[11px] uppercase tracking-widest2 text-muted mb-10">
+            Earlier education
+          </p>
+        </Reveal>
+        <div className="grid md:grid-cols-2 gap-10 md:gap-16">
+          {education.schooling.map((s, i) => (
+            <Reveal key={s.level} delay={i * 0.1} className="border-l border-accent/40 pl-6">
+              <p className="font-mono text-xs uppercase tracking-widest2 text-accent mb-3">{s.level}</p>
+              <p className="font-display text-2xl md:text-3xl text-offwhite leading-snug">{s.school}</p>
+            </Reveal>
+          ))}
+        </div>
       </div>
     </section>
   )

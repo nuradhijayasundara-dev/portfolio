@@ -1,10 +1,10 @@
 const leadership = [
   {
-    org: 'Computer Science Association',
-    institution: 'University of Sri Jayewardenepura',
-    role: 'ASSISTANT SECRETARY',
-    event: 'AURORA 2026',
+    org: 'AURORA 2026',
+    role: 'ASSISTANT SECRETARY · ORGANIZING COMMITTEE',
     eventType: 'Inter-University AI Ideathon / Conference',
+    organizer: 'Computer Science Association',
+    institution: 'University of Sri Jayewardenepura',
     focus: ['Agentic AI', 'Artificial Intelligence', 'Social Engineering'],
   },
   {

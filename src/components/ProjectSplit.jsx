@@ -1,4 +1,4 @@
-import { Github } from 'lucide-react'
+import { Github, Linkedin } from 'lucide-react'
 import Reveal from './Reveal'
 
 export default function ProjectSplit({ project }) {
@@ -31,28 +31,43 @@ export default function ProjectSplit({ project }) {
           ))}
         </Reveal>
 
-        <Reveal delay={0.2}>
-          <p className="font-mono text-[11px] uppercase tracking-widest2 text-muted mb-2">Features</p>
-          <ul className="space-y-2">
-            {project.features.map((f) => (
-              <li key={f} className="text-muted text-sm">
-                {f}
-              </li>
-            ))}
-          </ul>
-        </Reveal>
+        {project.features?.length > 0 && (
+          <Reveal delay={0.2}>
+            <p className="font-mono text-[11px] uppercase tracking-widest2 text-muted mb-2">Features</p>
+            <ul className="space-y-2">
+              {project.features.map((f) => (
+                <li key={f} className="text-muted text-sm">
+                  {f}
+                </li>
+              ))}
+            </ul>
+          </Reveal>
+        )}
 
-        {project.github && (
-          <Reveal delay={0.25} className="mt-8">
-            <a
-              href={project.github}
-              target="_blank"
-              rel="noopener noreferrer"
-              data-cursor="link"
-              className="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-widest2 text-muted border-b border-line pb-1 hover:border-accent hover:text-accent transition-colors duration-300"
-            >
-              GitHub <Github size={14} />
-            </a>
+        {(project.github || project.linkedin) && (
+          <Reveal delay={0.25} className="mt-8 flex flex-wrap gap-6">
+            {project.github && (
+              <a
+                href={project.github}
+                target="_blank"
+                rel="noopener noreferrer"
+                data-cursor="link"
+                className="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-widest2 text-muted border-b border-line pb-1 hover:border-accent hover:text-accent transition-colors duration-300"
+              >
+                GitHub <Github size={14} />
+              </a>
+            )}
+            {project.linkedin && (
+              <a
+                href={project.linkedin}
+                target="_blank"
+                rel="noopener noreferrer"
+                data-cursor="link"
+                className="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-widest2 text-muted border-b border-line pb-1 hover:border-accent hover:text-accent transition-colors duration-300"
+              >
+                LinkedIn post <Linkedin size={14} />
+              </a>
+            )}
           </Reveal>
         )}
       </div>

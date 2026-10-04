@@ -5,8 +5,8 @@ import profile from '../data/profile'
 import useActiveSection from '../hooks/useActiveSection'
 
 const links = [
-  { id: 'work', label: 'Work' },
   { id: 'about', label: 'About' },
+  { id: 'work', label: 'Work' },
   { id: 'experience', label: 'Experience' },
   { id: 'leadership', label: 'Leadership & Achievements' },
   { id: 'education', label: 'Education' },

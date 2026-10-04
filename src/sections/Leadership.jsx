@@ -18,13 +18,14 @@ export default function Leadership() {
       <div className="grid md:grid-cols-2 gap-10 md:gap-16">
         <Reveal className="border border-line rounded-2xl p-8 md:p-10">
           <p className="font-mono text-xs uppercase tracking-widest2 text-accent mb-4">{aurora.role}</p>
-          <h3 className="font-display text-2xl text-offwhite mb-2">{aurora.org}</h3>
-          <p className="text-muted text-sm mb-6">{aurora.institution}</p>
+          <h3 className="font-display text-3xl md:text-4xl text-offwhite mb-2">{aurora.org}</h3>
+          <p className="text-muted text-sm mb-6">{aurora.eventType}</p>
 
           <div className="hairline mb-6" />
 
-          <p className="font-display text-xl text-offwhite mb-1">{aurora.event}</p>
-          <p className="text-muted text-sm mb-5">{aurora.eventType}</p>
+          <p className="font-mono text-[11px] uppercase tracking-widest2 text-muted mb-2">Conducted by</p>
+          <p className="font-display text-xl text-offwhite mb-1">{aurora.organizer}</p>
+          <p className="text-muted text-sm mb-6">{aurora.institution}</p>
 
           <div className="flex flex-wrap gap-2">
             {aurora.focus.map((f) => (
