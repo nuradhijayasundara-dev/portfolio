@@ -77,7 +77,7 @@ export default function Hero() {
         <div className="grid grid-cols-1 lg:grid-cols-12 items-center gap-y-16">
           <div className="relative order-1 lg:col-start-1 lg:col-span-6 lg:row-start-1 lg:justify-self-start">
             <Portrait
-              className="w-[62%] sm:w-[42%] max-w-[320px] mx-auto lg:w-auto lg:max-w-none lg:mx-0 lg:h-[58vh] lg:max-h-[600px] lg:min-h-[420px]"
+              className="w-[62%] sm:w-[42%] max-w-[320px] mx-auto lg:w-[min(30vw,440px)] lg:max-w-none lg:mx-0"
               style={
                 reduced
                   ? undefined

@@ -42,12 +42,6 @@ const profile = {
     "I enjoy solving problems methodically exploring how systems work and turning what I learn into practical software.",
   ],
 
-  // The About section's dedicated cybersecurity moment.
-  securityStatement: {
-    lines: ['Security', 'is part of', 'the system.'],
-    tags: ['Cybersecurity', 'Kali Linux', 'Ethical security', 'System analysis', 'Security fundamentals'],
-  },
-
   // Content hierarchy — communicated through typography and spacing, not cards.
   focusHierarchy: [
     {

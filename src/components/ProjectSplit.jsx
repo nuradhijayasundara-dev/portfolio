@@ -1,6 +1,6 @@
 import { Github, Linkedin } from 'lucide-react'
 import Reveal from './Reveal'
-import FinanceViz from './FinanceViz'
+import ProjectShowcase from './ProjectShowcase'
 
 export default function ProjectSplit({ project }) {
   return (
@@ -42,9 +42,13 @@ export default function ProjectSplit({ project }) {
           ))}
         </Reveal>
 
-        {project.visual === 'finance' && (
+        {project.screens && (
           <Reveal delay={0.15} className="mb-8">
-            <FinanceViz />
+            <ProjectShowcase
+              screens={project.screens}
+              name={project.id}
+              heading={project.screensHeading || 'Screenshots'}
+            />
           </Reveal>
         )}
 

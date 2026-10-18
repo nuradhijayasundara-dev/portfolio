@@ -1,6 +1,7 @@
 import { ArrowUpRight, Github } from 'lucide-react'
 import Reveal from './Reveal'
 import SystemArchitecture from './SystemArchitecture'
+import ProjectShowcase from './ProjectShowcase'
 
 export default function ProjectImmersive({ project }) {
   return (
@@ -40,6 +41,12 @@ export default function ProjectImmersive({ project }) {
       {project.architecture && (
         <Reveal className="mb-16">
           <SystemArchitecture />
+        </Reveal>
+      )}
+
+      {project.screens && (
+        <Reveal className="mb-16">
+          <ProjectShowcase screens={project.screens} />
         </Reveal>
       )}
 

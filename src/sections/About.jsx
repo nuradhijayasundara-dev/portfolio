@@ -2,7 +2,7 @@ import { motion } from 'framer-motion'
 import profile from '../data/profile'
 import SectionLabel from '../components/SectionLabel'
 import Reveal from '../components/Reveal'
-import SecurityNetwork from '../components/SecurityNetwork'
+import FocusList from '../components/FocusList'
 import useReducedMotion from '../hooks/useReducedMotion'
 
 const headlineContainer = {
@@ -92,31 +92,6 @@ export default function About() {
         </div>
       </div>
 
-      {/* What I'm building → how I'm learning to secure it */}
-      <Reveal className="relative mt-24 md:mt-32 rounded-2xl border border-line overflow-hidden">
-        <SecurityNetwork className="opacity-70" />
-        <div className="relative bg-ink/55 px-6 py-16 md:px-16 md:py-24">
-          <p className="font-mono text-xs uppercase tracking-widest2 text-accent mb-6">
-            A note on security
-          </p>
-          <h3 className="font-display text-display-md text-offwhite text-balance">
-            <span className="block">{profile.securityStatement.lines[0]}</span>
-            <span className="block">{profile.securityStatement.lines[1]}</span>
-            <span className="block text-accent">{profile.securityStatement.lines[2]}</span>
-          </h3>
-          <div className="flex flex-wrap gap-x-6 gap-y-3 mt-10">
-            {profile.securityStatement.tags.map((tag) => (
-              <span
-                key={tag}
-                className="font-mono text-[11px] md:text-xs uppercase tracking-widest2 text-muted border-b border-line/70 pb-1.5"
-              >
-                {tag}
-              </span>
-            ))}
-          </div>
-        </div>
-      </Reveal>
-
       {/* Content priority — typography and spacing carry the hierarchy, not cards */}
       <div className="mt-24 md:mt-32">
         <Reveal>
@@ -124,30 +99,7 @@ export default function About() {
             What I&rsquo;m focused on
           </p>
         </Reveal>
-        <div>
-          {profile.focusHierarchy.map((item, i) => (
-            <Reveal
-              key={item.index}
-              delay={i * 0.05}
-              className="border-t border-line py-6 md:py-7 flex flex-wrap items-baseline gap-x-5 gap-y-2"
-            >
-              <span className="font-mono text-xs text-accent w-8 shrink-0">{item.index}</span>
-              <span
-                className="font-display text-offwhite shrink-0"
-                style={{
-                  fontSize: `clamp(${1.1 + (4 - i) * 0.12}rem, ${2.4 + (4 - i) * 0.5}vw, ${1.5 + (4 - i) * 0.35}rem)`,
-                  opacity: 1 - i * 0.08,
-                }}
-              >
-                {item.label}
-              </span>
-              <span className="text-muted text-sm md:text-base flex-1 min-w-[200px]">
-                {item.description}
-              </span>
-            </Reveal>
-          ))}
-          <div className="hairline" />
-        </div>
+        <FocusList />
       </div>
     </section>
   )
