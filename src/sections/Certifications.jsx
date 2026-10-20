@@ -21,7 +21,30 @@ export default function Certifications() {
               <span className="font-mono text-sm text-accent">{cert.index}</span>
             </Reveal>
 
-            <Reveal className="md:col-span-7">
+            <Reveal delay={0.05} className="md:col-span-2">
+              {cert.badge && (
+                <a
+                  href={cert.credentialUrl || undefined}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  data-cursor="link"
+                  aria-label={`View credential: ${cert.title}`}
+                  className="group inline-block rounded-xl transition-transform duration-500 ease-premium hover:-translate-y-1.5 hover:rotate-[-2deg]"
+                >
+                  <img
+                    src={cert.badge}
+                    alt={cert.title}
+                    width={92}
+                    height={98}
+                    loading="lazy"
+                    decoding="async"
+                    className="w-20 md:w-[92px] h-auto drop-shadow-[0_10px_22px_rgba(37,99,235,0.35)] transition-[filter] duration-500 group-hover:drop-shadow-[0_14px_28px_rgba(96,165,250,0.6)]"
+                  />
+                </a>
+              )}
+            </Reveal>
+
+            <Reveal className="md:col-span-6">
               <h3 className="font-display text-xl md:text-2xl text-offwhite text-balance">{cert.title}</h3>
               <div className="mt-3 flex flex-wrap items-center gap-3 font-mono text-xs uppercase tracking-widest2 text-muted">
                 <span className="text-accent">{cert.issuer}</span>
@@ -32,7 +55,7 @@ export default function Certifications() {
               </div>
             </Reveal>
 
-            <Reveal delay={0.1} className="md:col-span-4 flex items-start md:justify-end">
+            <Reveal delay={0.1} className="md:col-span-3 flex items-start md:justify-end">
               {cert.credentialUrl ? (
                 <a
                   href={cert.credentialUrl}

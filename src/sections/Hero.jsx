@@ -1,7 +1,6 @@
 import { useRef } from 'react'
 import { motion, useScroll, useTransform } from 'framer-motion'
 import profile from '../data/profile'
-import Reveal from '../components/Reveal'
 import Portrait from '../components/Portrait'
 import useReducedMotion from '../hooks/useReducedMotion'
 
@@ -143,29 +142,6 @@ export default function Hero() {
         </motion.div>
       </div>
 
-      <div className="max-w-content mx-auto px-6 md:px-12 pb-28 md:pb-40">
-        <div className="hairline mb-16" />
-        <div className="grid md:grid-cols-12 gap-8 md:gap-6">
-          <Reveal className="md:col-span-7 lg:col-span-6">
-            <p className="font-display text-display-md text-balance text-offwhite">
-              {profile.heroStatement}
-            </p>
-          </Reveal>
-
-          <Reveal delay={0.15} className="md:col-span-5 md:col-start-8 lg:col-start-8 flex flex-col justify-end">
-            <ul className="space-y-3">
-              {profile.heroFocusAreas.map((area) => (
-                <li
-                  key={area}
-                  className="font-mono text-sm md:text-base tracking-wide text-muted border-b border-line/70 pb-3"
-                >
-                  {area}
-                </li>
-              ))}
-            </ul>
-          </Reveal>
-        </div>
-      </div>
     </section>
   )
 }

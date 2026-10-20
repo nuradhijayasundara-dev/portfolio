@@ -6,6 +6,7 @@ const certifications = [
     issuer: 'Amazon Web Services (AWS)',
     issued: 'AUG 2026',
     credentialUrl: 'https://www.credly.com/badges/262375e4-600b-4828-8652-c95c0b5510be/linked_in_profile',
+    badge: '/images/badges/microservices-cicd.webp',
   },
   {
     index: '02',
@@ -13,6 +14,7 @@ const certifications = [
     issuer: 'Amazon Web Services (AWS)',
     issued: 'AUG 2026',
     credentialUrl: 'https://www.credly.com/badges/9df25023-667e-46f0-bb29-946f7c859588/linked_in_profile',
+    badge: '/images/badges/cloud-security-foundations.webp',
   },
   {
     index: '03',
@@ -20,6 +22,7 @@ const certifications = [
     issuer: 'Amazon Web Services (AWS)',
     issued: 'AUG 2026',
     credentialUrl: 'https://www.credly.com/badges/d3725b09-9bd9-4a8f-af04-f1faa5bb8654/linked_in_profile',
+    badge: '/images/badges/cloud-security-builder.webp',
   },
   {
     index: '04',
@@ -27,6 +30,7 @@ const certifications = [
     issuer: 'Amazon Web Services (AWS)',
     issued: 'AUG 2026',
     credentialUrl: 'https://www.credly.com/badges/568bbbea-9e54-43d1-9afa-a5435270b50e/linked_in_profile',
+    badge: '/images/badges/cloud-foundations.webp',
   },
 ]
 
