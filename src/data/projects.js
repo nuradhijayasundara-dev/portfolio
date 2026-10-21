@@ -42,6 +42,19 @@ const projects = [
       flow: ['Courier System', 'API Gateway', 'Matching Platform', 'Fleet System'],
       supporting: ['Authentication', 'Matching', 'GPS', 'Notification'],
     },
+    howItWorks: [
+      { title: 'Request', text: 'A courier signs in and submits a shipment with pickup, delivery and parcel details.' },
+      { title: 'Route in', text: 'The API Gateway is the single entry point and passes the request to the right service.' },
+      { title: 'Match', text: 'The matching platform calculates routes with OSRM and finds vehicles that fit the shipment.' },
+      { title: 'Book', text: 'The fleet side offers available capacity, and the match moves to booking.' },
+      { title: 'Deliver', text: 'The assigned driver sees the trip in the Driver portal and starts it.' },
+    ],
+    advantages: [
+      { title: 'Empty return trips are costly', text: 'Fleet vehicles often travel back empty after a delivery, wasting time, money and labor.' },
+      { title: 'Lower courier costs', text: 'With courier charges rising, couriers can use these returning vehicles for their shipments at a lower price.' },
+      { title: 'Matched by criteria', text: 'Shipments are matched to returning vehicles by route, load and vehicle type, so only suitable vehicles are offered.' },
+      { title: 'A win for both sides', text: 'Fleet owners earn from trips that would otherwise be empty, and couriers pay less for delivery.' },
+    ],
     screens: [
       {
         id: 'login',

@@ -3,6 +3,8 @@ import Reveal from './Reveal'
 import SystemArchitecture from './SystemArchitecture'
 import ProjectShowcase from './ProjectShowcase'
 
+const STEP_COLORS = ['#F59E0B', '#A78BFA', '#3B82F6', '#10B981', '#F472B6']
+
 export default function ProjectImmersive({ project }) {
   return (
     <article className="py-20 md:py-32 border-b border-line">
@@ -37,6 +39,56 @@ export default function ProjectImmersive({ project }) {
           <p className="text-muted leading-relaxed">{project.solution}</p>
         </Reveal>
       </div>
+
+      {project.howItWorks && (
+        <div className="mb-16">
+          <Reveal>
+            <p className="font-mono text-[11px] uppercase tracking-widest2 text-muted mb-8">How it works</p>
+          </Reveal>
+          <ol className="grid sm:grid-cols-2 lg:grid-cols-5 gap-x-6 gap-y-8">
+            {project.howItWorks.map((step, i) => {
+              const color = STEP_COLORS[i % STEP_COLORS.length]
+              return (
+                <Reveal as="li" key={step.title} delay={i * 0.08} className="relative">
+                  <div className="flex items-center gap-3 mb-4">
+                    <span
+                      className="w-8 h-8 rounded-full flex items-center justify-center font-mono text-xs font-bold text-ink shrink-0"
+                      style={{ background: color, boxShadow: `0 0 14px ${color}66` }}
+                    >
+                      {i + 1}
+                    </span>
+                    <span className="hidden lg:block h-px flex-1" style={{ background: `linear-gradient(90deg, ${color}, transparent)` }} />
+                  </div>
+                  <p className="font-display text-xl text-offwhite mb-2">{step.title}</p>
+                  <p className="text-muted text-sm leading-relaxed">{step.text}</p>
+                </Reveal>
+              )
+            })}
+          </ol>
+        </div>
+      )}
+
+      {project.advantages && (
+        <div className="mb-16">
+          <Reveal>
+            <p className="font-mono text-[11px] uppercase tracking-widest2 text-muted mb-8">Why it helps</p>
+          </Reveal>
+          <div className="grid sm:grid-cols-2 gap-x-12 gap-y-8 border-t border-line pt-8">
+            {project.advantages.map((a, i) => (
+              <Reveal key={a.title} delay={i * 0.06} className="flex gap-4">
+                <span
+                  className="mt-2 w-2 h-2 rounded-full shrink-0"
+                  style={{ background: STEP_COLORS[i % STEP_COLORS.length], boxShadow: `0 0 10px ${STEP_COLORS[i % STEP_COLORS.length]}` }}
+                />
+                <div>
+                  <p className="font-display text-xl text-offwhite mb-1">{a.title}</p>
+                  <p className="text-muted text-sm md:text-base leading-relaxed">{a.text}</p>
+                </div>
+              </Reveal>
+            ))}
+          </div>
+        </div>
+      )}
 
       {project.architecture && (
         <Reveal className="mb-16">
