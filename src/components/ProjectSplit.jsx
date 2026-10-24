@@ -54,7 +54,7 @@ export default function ProjectSplit({ project }) {
 
         {project.features?.length > 0 && (
           <Reveal delay={0.2}>
-            <p className="font-mono text-[11px] uppercase tracking-widest2 text-muted mb-2">Features</p>
+            <p className="font-mono text-[11px] uppercase tracking-widest2 text-muted mb-2">{project.featuresLabel || "Features"}</p>
             <ul className="space-y-2">
               {project.features.map((f) => (
                 <li key={f} className="text-muted text-sm">

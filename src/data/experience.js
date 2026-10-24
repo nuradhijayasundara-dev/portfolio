@@ -2,8 +2,9 @@ const experience = [
   {
     index: '01',
     company: 'Island First MCQ Platform',
+    logo: null,
     role: 'EMPLOYEE',
-    period: 'PRESENT',
+    period: '2026',
     location: '',
     summary:
       'Island First is an online MCQ platform. Currently working at Island First, contributing to the day-to-day operations and development-related activities of the platform.',
@@ -20,8 +21,9 @@ const experience = [
   {
     index: '02',
     company: 'Wicherley International School',
+    logo: '/images/logos/wycherley.webp',
     role: 'INVIGILATOR',
-    period: '2 YEARS',
+    period: '2025 — 2026',
     location: 'COLOMBO',
     summary:
       'Worked as an Invigilator at Wicherley International School in Colombo for two years while pursuing my university studies.',
@@ -38,6 +40,7 @@ const experience = [
   {
     index: '03',
     company: 'BOC Pannala',
+    logo: '/images/logos/boc.webp',
     role: 'INTERN',
     period: '6 MONTHS',
     location: 'PANNALA, SRI LANKA',

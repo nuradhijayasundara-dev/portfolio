@@ -1,6 +1,7 @@
 import education from '../data/education'
 import SectionLabel from '../components/SectionLabel'
 import Reveal from '../components/Reveal'
+import OrgLogo from '../components/OrgLogo'
 
 export default function Education() {
   return (
@@ -14,6 +15,7 @@ export default function Education() {
       </Reveal>
 
       <Reveal delay={0.15} className="mt-10 flex flex-wrap items-center gap-4">
+        <OrgLogo src={education.institutionLogo} name={education.institution} size={56} />
         <span className="font-display text-xl md:text-2xl text-muted">{education.institution}</span>
         <span className="font-mono text-xs uppercase tracking-widest2 text-accent border border-accent/30 rounded-full px-3 py-1.5">
           {education.status}
@@ -55,9 +57,12 @@ export default function Education() {
           {education.schooling.map((s, i) => (
             <Reveal key={s.level} delay={i * 0.1} className="border-l border-accent/40 pl-6">
               <p className="font-mono text-xs uppercase tracking-widest2 text-accent mb-3">
-                {s.level} ({s.year})
+                {s.level} ({s.year}) <span className="text-muted normal-case tracking-normal ml-1">({s.medium})</span>
               </p>
-              <p className="font-display text-2xl md:text-3xl text-offwhite leading-snug mb-6">{s.school}</p>
+              <div className="flex items-center gap-4 mb-6">
+                <OrgLogo src={s.logo} name={s.school} size={52} />
+                <p className="font-display text-2xl md:text-3xl text-offwhite leading-snug">{s.school}</p>
+              </div>
               <p className="font-mono text-[11px] uppercase tracking-widest2 text-muted mb-3">Results</p>
               <ul className="divide-y divide-line/70">
                 {s.results.map(([subject, grade]) => (

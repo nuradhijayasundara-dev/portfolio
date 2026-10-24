@@ -229,6 +229,23 @@ const projects = [
     github: 'https://github.com/nuradhijayasundara-dev/FinacialTracker',
     liveUrl: null,
   },
+  {
+    id: 'coevolutionary-ga-paper',
+    index: '05',
+    layout: 'split',
+    status: 'ACCEPTED BY IEEE',
+    tags: ['RESEARCH', 'CONFERENCE PAPER', 'MACHINE LEARNING'],
+    title: ['CO-EVOLUTIONARY', 'GENETIC', 'ALGORITHM', 'LIBRARY'],
+    description:
+      'A conference paper from a research group, titled "A Co-Evolutionary Genetic Algorithm Library for Feature Selection in High-Dimensional Data". It investigates a co-evolutionary genetic algorithm approach to choosing the most useful features from high-dimensional data. After submission, the paper was accepted by IEEE.',
+    technologies: ['Genetic Algorithms', 'Co-Evolution', 'Feature Selection', 'High-Dimensional Data'],
+    featuresLabel: 'My contribution',
+    features: [
+      'Contributed to the methodology section of the paper',
+    ],
+    github: null,
+    liveUrl: null,
+  },
 ]
 
 export default projects

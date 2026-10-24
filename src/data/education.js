@@ -1,6 +1,7 @@
 const education = {
   degree: 'BSc (Hons) in Computer Science',
   institution: 'University of Sri Jayewardenepura',
+  institutionLogo: '/images/logos/usj.webp',
   status: 'Currently Studying',
   startYear: '2024',
   expectedGraduation: 'Present',
@@ -11,7 +12,9 @@ const education = {
     {
       level: 'G.C.E. Advanced Level',
       year: '2022',
+      medium: 'Sinhala medium',
       school: 'Central College, Kuliyapitiya',
+      logo: '/images/logos/central-college.webp',
       results: [
         ['Chemistry', 'B'],
         ['Combined Mathematics', 'C'],
@@ -21,7 +24,9 @@ const education = {
     {
       level: 'G.C.E. Ordinary Level',
       year: '2018',
+      medium: 'English medium',
       school: 'Saranath College, Kuliyapitiya',
+      logo: '/images/logos/saranath.webp',
       results: [
         ['Sinhala', 'A'],
         ['Buddhism', 'A'],

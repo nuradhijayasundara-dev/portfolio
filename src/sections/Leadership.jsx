@@ -1,6 +1,7 @@
 import leadership from '../data/leadership'
 import SectionLabel from '../components/SectionLabel'
 import Reveal from '../components/Reveal'
+import OrgLogo from '../components/OrgLogo'
 
 export default function Leadership() {
   const [aurora, ieee, nexus] = leadership
@@ -18,7 +19,10 @@ export default function Leadership() {
       <div className="grid md:grid-cols-2 gap-10 md:gap-16">
         <Reveal className="border border-line rounded-2xl p-8 md:p-10">
           <p className="font-mono text-xs uppercase tracking-widest2 text-accent mb-4">{aurora.role}</p>
-          <h3 className="font-display text-3xl md:text-4xl text-offwhite mb-2">{aurora.org}</h3>
+          <div className="flex items-center gap-4 mb-2">
+            <OrgLogo src="/images/logos/aurora.webp" name={aurora.org} size={56} />
+            <h3 className="font-display text-3xl md:text-4xl text-offwhite">{aurora.org}</h3>
+          </div>
           <p className="text-muted text-sm mb-6">{aurora.eventType}</p>
 
           <div className="hairline mb-6" />
@@ -38,6 +42,7 @@ export default function Leadership() {
 
         <Reveal delay={0.1} className="border border-line rounded-2xl p-8 md:p-10 flex flex-col justify-center">
           <p className="font-mono text-xs uppercase tracking-widest2 text-accent mb-4">{ieee.role}</p>
+          <OrgLogo src="/images/logos/ieee.svg" name={ieee.org} size={34} className="mb-4" />
           <h3 className="font-display text-2xl text-offwhite mb-2">{ieee.org}</h3>
           <p className="text-muted text-sm">{ieee.description}</p>
         </Reveal>

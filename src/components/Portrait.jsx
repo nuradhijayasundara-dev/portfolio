@@ -38,7 +38,7 @@ export default function Portrait({ className = '', style }) {
 
   return (
     <motion.div
-      className={`relative select-none aspect-square ${className}`}
+      className={`relative select-none aspect-[900/1271] ${className}`}
       style={style}
       initial={reduced ? false : { opacity: 0, scale: 0.94, filter: 'blur(8px)' }}
       animate={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
@@ -47,7 +47,7 @@ export default function Portrait({ className = '', style }) {
     >
       {/* soft blue glow behind the portrait, moving slightly against the cursor */}
       <motion.div
-        className="absolute -inset-10 -z-10 rounded-full blur-[70px]"
+        className="absolute -inset-10 -z-10 rounded-3xl blur-[70px]"
         style={{
           x: reduced ? 0 : glowX,
           y: reduced ? 0 : glowY,
@@ -58,7 +58,7 @@ export default function Portrait({ className = '', style }) {
 
       {/* fine ring that sits just outside the photo */}
       <div
-        className="absolute -inset-2 rounded-full border border-accent/40"
+        className="absolute -inset-2 rounded-[1.6rem] border border-accent/40"
         style={{ boxShadow: '0 0 40px -6px rgba(59,130,246,0.5)' }}
       />
 
@@ -67,14 +67,14 @@ export default function Portrait({ className = '', style }) {
         className="relative w-full h-full"
       >
         <img
-          src="/images/portrait-circle.webp"
+          src="/images/portrait-rect.webp"
           alt="Portrait of Wiyathma Anuradhi Jayasundara"
-          width={740}
-          height={740}
+          width={900}
+          height={1271}
           loading="eager"
           fetchpriority="high"
           decoding="async"
-          className="w-full h-full object-cover rounded-full"
+          className="w-full h-full object-cover rounded-2xl"
         />
       </motion.div>
     </motion.div>

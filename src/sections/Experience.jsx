@@ -1,6 +1,7 @@
 import experience from '../data/experience'
 import SectionLabel from '../components/SectionLabel'
 import Reveal from '../components/Reveal'
+import OrgLogo from '../components/OrgLogo'
 
 export default function Experience() {
   return (
@@ -21,10 +22,13 @@ export default function Experience() {
             </Reveal>
 
             <Reveal className="md:col-span-4">
-              <h3 className="font-display text-2xl md:text-3xl text-offwhite">{job.company}</h3>
+              <div className="flex items-center gap-4 mb-1">
+                <OrgLogo src={job.logo} name={job.company} size={44} fallback={false} />
+                <h3 className="font-display text-2xl md:text-3xl text-offwhite">{job.company}</h3>
+              </div>
               <div className="mt-3 flex flex-wrap items-center gap-3 font-mono text-xs uppercase tracking-widest2 text-muted">
                 <span className="text-accent">{job.role}</span>
-                <span>{job.period}</span>
+                {job.period && <span>{job.period}</span>}
                 {job.location && <span>{job.location}</span>}
               </div>
             </Reveal>
